@@ -1,0 +1,175 @@
+<!-- views/pages/cart.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+    <style>
+
+      body {
+         font-family: poppins;
+         color:#333;
+      }
+
+        .btn-continue-shopping {
+            background-color: #fff;
+            color: #333;
+        }
+
+        .btn-add-to-cart {
+            background-color: #4caf50;
+            color: #fff;
+        }
+        @media (min-width: 1025px) {
+         .h-custom {
+         height: 100vh !important;
+         }
+       }
+       .head {
+         font-size: larger;
+         color:#ff0000;
+         text-align: center;
+         justify-items: center;
+       }
+       td {
+        padding-top:3%;
+        
+      } 
+
+      .checkout-btn {
+    
+        
+      }
+
+      .home-btn {
+   
+      }
+     
+    </style>
+</head>
+<body>
+   <section class="h-100 h-custom">
+      <h1 class="head">Shopping Cart</h1>
+     
+      <table width="100%"> 
+        <tr class="container-headname">
+          <div>
+            <th id="cart-product" style="width: 200px;">Product</th>
+            <th id="cart-product"></th>
+            <th>Quantity</th>
+            <th id="sub">Total</th>
+            <hr class="mx-auto" />
+          </div>
+
+        </tr>
+
+        
+        <% cart.forEach(function(item) { %>
+          
+        <tr>
+          <td>
+            <div class="products-info">
+              <img src="images/<%= item.image %>" width="80%" />
+              
+              <td>
+              <div class="cart-content">
+                <p><%= item.name %></p>
+
+                <% if(item.sale_price){ %>
+                  <span style="color: red;"><b><%= item.sale_price %></b></span> $ <% } else { %>
+                  <span><%= item.price %></span> $ <% } %>
+                  <span style="text-decoration:line-through"><p style="color: rgb(97, 97, 97)"><%= item.price %></p></span>
+                
+              </td>
+              
+              </div>
+              
+            </div>
+            
+          </td>
+          
+         
+
+          <td align="center">
+            <form method="post" action="/edit_product_quantity">
+              <input type="hidden" value="<%= item.id %>" name="id" />
+              <input type="submit" value="-" name="decrease_product_quantity" class="decrease_btn"/>
+              <input
+                type="text"
+                name="quantity"
+                value="<%= item.quantity %>"
+                style="width: 30px"
+                readonly
+              />
+              <input type="submit" value="+" name="increase_product_quantity" class="increase_btn"/>
+            </form>
+          </td>
+
+          <td id="sub" align="center">
+            <% if(item.sale_price){ %>
+            <span class="product-price"
+              cart-total><%= item.sale_price * item.quantity %> USD</span
+            >
+            <% } else { %>
+            <span style="color: red;" class="product-price"><%= item.price * item.quantity %> USD</span>
+            <% } %>
+          </td>
+          <td align="center">
+            <form method="post" action="/remove_product">
+              
+              <input type="hidden" name="id" value="<%= item.id %>" class="remove-btn" />
+              <input
+                type="submit"
+                name="remove_btn"
+                class="remove-btn"
+                value="remove"
+              />
+           
+            </form>
+          </td>
+
+        </tr>
+
+        <% }) %>
+        <!-- /cart product -->
+
+        <!-- cart total -->
+      </table>
+
+      <table class="card-total" style="width: 100%">
+        
+        <tr>
+          <td id="#sub">Total <span style="color: red;">
+            <b><%= total %></span></b>
+          
+          </td>
+        </tr>
+      </table>
+      <br>
+      <hr class="mx-auto" />
+      <!-- checkout or continue shopping -->
+
+      <form method="get" action="/" style="display: inline">
+        <input
+          type="submit"
+          class="home-btn"
+          value="Continue shopping"
+          name=""
+        />
+      </form>
+      
+        
+          <form method="get" action="/checkout" style="display: inline">
+            <input
+              type="submit"
+              class="checkout-btn"
+              value="Checkout"
+              name=""
+            />
+          </form>
+ 
+    </section>
+</body>
+</html>
